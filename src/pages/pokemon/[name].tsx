@@ -1,18 +1,21 @@
 // @packages
 import Container from '@mui/material/Container';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Image from 'next/image';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { dehydrate, QueryClient } from 'react-query';
 import { useRouter } from 'next/router';
 
 // @scripts
+import EmptyPage from '../../components/empty-page';
 import PokemonCardDetails from '../../components/pokemon-card-details';
 import ProgressBar from '../../components/progress-bar';
-import { getFormatedNumber } from '../../utils';
+import { checkFavorites, getFormatedNumber, toggleFavorite } from '../../utils';
 import { getPokemon, getPokemons, useFetchPokemon } from '../../api';
 
 const PokemonPage: FC = () => {
@@ -20,7 +23,14 @@ const PokemonPage: FC = () => {
   const { name } = query as { name: string };
   const { data } = useFetchPokemon(name);
 
-  if (!data) return null;
+  const [isInFoavorites, setIsInFoavorites] = useState<boolean>(checkFavorites(name));
+
+  if (!data) return <EmptyPage />;
+
+  const handleOnSavePokemon = () => {
+    toggleFavorite(name);
+    setIsInFoavorites((prevState) => !prevState);
+  };
 
   return (
     <Grid container component={Container} maxWidth="lg" sx={{ marginBottom: 2 }}>
@@ -29,7 +39,10 @@ const PokemonPage: FC = () => {
           {data.name} {getFormatedNumber(data.id)}
         </Typography>
       </Grid>
-      <Grid item sx={{ textAlign: 'center' }} xs={12} md={6}>
+      <Grid item sx={{ textAlign: 'center', position: 'relative' }} xs={12} md={6}>
+        <IconButton onClick={handleOnSavePokemon} sx={{ position: 'absolute', right: '5%' }}>
+          <FavoriteIcon fontSize="large" color={isInFoavorites ? 'error' : 'inherit'} />
+        </IconButton>
         <Image
           alt={data.name}
           height={300}

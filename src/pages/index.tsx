@@ -9,6 +9,7 @@ import { GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from 'react-query';
 
 // @scripts
+import EmptyPage from '../components/empty-page';
 import PokemonCard from '../components/pokemon-card';
 import Search from '../components/search';
 import { getPokemons, useFetchPokemons } from '../api';
@@ -27,14 +28,16 @@ const HomePage: FC = () => {
 
   const { data } = useFetchPokemons();
 
-  const pokemons: NewPokemonsList[] | undefined = data?.results.map((item, index) => {
+  if (!data) return <EmptyPage />;
+
+  const pokemons: NewPokemonsList[] | undefined = data.results.map((item, index) => {
     const id = index + 1;
     const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
 
     return { ...item, id, image };
   });
 
-  const filteredData = pokemons?.filter((item) => {
+  const filteredData = pokemons.filter((item) => {
     if (searchValue.length < 1) return item;
 
     return item.name.toLowerCase().includes(searchValue.toLowerCase());
@@ -69,7 +72,7 @@ const HomePage: FC = () => {
         </Box>
         <Divider sx={{ marginBottom: 6 }} />
         <Grid container spacing={2}>
-          {filteredData?.map(({ id, image, name }) => (
+          {filteredData.map(({ id, image, name }) => (
             <Grid item xs={6} sm={4} md={3} key={id}>
               <PokemonCard id={id} image={image} name={name} />
             </Grid>
