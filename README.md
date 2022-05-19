@@ -6,7 +6,7 @@
 
 Project made with React, TypeScript, React Query and MUI
 
-Site deployed with Vercel: https://pokedex-6fhj8vbra-wilfersalas.vercel.app/
+Site deployed with Vercel: https://pokedex-wilfersalas.vercel.app/
 
 # Requeriments:
 
