@@ -38,7 +38,6 @@ const Search: FC<Props> = ({
       }}
     >
       <InputBase
-        autoFocus
         onChange={onChange}
         placeholder="Search Pokémon..."
         sx={{ ml: 1, flex: 1 }}
