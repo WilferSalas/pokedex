@@ -19,7 +19,7 @@ Open a console (terminal) and create the **pokedex**'s folder. Once folder is cr
 
 ```bash
 # Clone project
-$ git clone https://github.com/WilferSalas/react-baseline.git
+$ git clone https://github.com/WilferSalas/pokedex.git
 # Enter to project's folder
 $ cd pokedex
 # Install dependencies
