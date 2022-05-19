@@ -1,0 +1,18 @@
+// @packages
+import axios from 'axios';
+import { useQuery } from 'react-query';
+
+// @interfaces
+import { PokemonInfo, PokemonsList } from '../interfaces';
+
+const client = 'https://pokeapi.co/api/v2';
+
+export const getPokemons = () => axios.get<PokemonsList>(`${client}/pokemon?limit=151`).then((res) => res.data);
+
+export const getPokemon = (name: string) => axios.get<PokemonInfo>(`${client}/pokemon/${name}`).then((res) => res.data);
+
+export const useFetchPokemons = () =>
+  useQuery<PokemonsList, Error>('getPokemons', getPokemons);
+
+export const useFetchPokemon = (name: string) =>
+  useQuery<PokemonInfo, Error>(['pokemon', name], () => getPokemon(name));
